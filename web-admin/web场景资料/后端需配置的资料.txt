@@ -1,0 +1,81 @@
+1.Thymaleaf 视图解析器的配置
+创建项目时勾选 或者自己手动引入依赖
+     <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
+        </dependency>
+
+       通过源码可以得到，其源码默认是templates文件夹下面的html页面
+        public static final String DEFAULT_PREFIX = "classpath:/templates/";
+           public static final String DEFAULT_SUFFIX = ".html";
+=====================================================================
+=====================================================================
+=====================================================================
+2. 拦截器
+比如在登录时，如果登录成功传递一个session，在拦截器类中
+public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+}
+获取这个session的值，如果获取到的表示可以登录，执行放行（return true ）否则return false
+需要在配置类中把这个拦截器类应用起来就在配置类中重写addInterceptors方法，把这个拦截器类注册到
+拦截器方法中，拦截规则是 /** 拦截所有请求，表示访问项目的所有页面之前都
+要进行LoginInterceptor类中的判断结果。
+registry.addInterceptor(new LoginInterceptor()).addPathPatterns("/**")
+需要排除页面加载的 /  和 登录界面的 login  以及静态资源
+ .excludePathPatterns("/","/login","/css/**","/fonts/**",
+ "/images/**","/js/**",   "/error/**","/form/**","/table/**");
+
+=====================================================================
+=====================================================================
+=====================================================================
+ 文件上传
+ 前端必须要有文件域   <input type="file" name="headerImg" id="exampleInputFile">
+ 表单上要有 method="post" enctype="multipart/form-data"
+
+ 后端接收
+ @RequestPart("headerImg")MultipartFile  headerImg,
+ MultipartFile表示接收文件
+ 上传的单个文件的大小和一次请求文件的大小都有要求
+ 在配置文件中写
+ spring.servlet.multipart.max-file-size=10MB
+ spring.servlet.multipart.max-request-size=100MB
+ 要进行文件的保存首先保证文件不是空，我这里是保存到桌面，所以直接获取文件名getOriginalFilename
+ 防止文件重名通过UUID设置文件前缀
+ 文件名重新设置好后，调用transferTo(new File(具体路径+文件名)) （先读后写）
+
+
+         if (!headerImg.isEmpty()){
+             String originalFilename = headerImg.getOriginalFilename();
+             //防止文件重名 通过uuid设置文件名的前缀为随机字符
+             String suffixFileName = originalFilename.substring(originalFilename.lastIndexOf("."));
+             String fileName = UUID.randomUUID().toString().replaceAll("-","")+suffixFileName;
+
+             headerImg.transferTo(new File("C:\\Users\\23500\\Desktop\\测试文件\\ss\\"+fileName));
+
+
+ 如果是保存到项目
+     ServletContext servletContext = session.getServletContext();
+
+         String filePath = servletContext.getRealPath("photo");//真实路径
+         创建文件路径
+         File file=new File(filePath);
+         if(!file.exists()){//如果文件路径为空 则创建
+             file.mkdir();创建这个photo文件夹
+         }
+         之后的操作域之前一样
+
+
+=====================================================================
+=====================================================================
+=====================================================================
+针对于异常处理，通过源码分析对于400多的 500多的 默认跳转至
+ templates/error下面的4xx和5xx页面
+ 只需要在错误页面标注
+  <h3 th:text="${message}"></h3>
+  <p th:text="${trace}"></p>就可以获取信息
+
+       源码：
+         Object timestamp = model.get("timestamp");
+                  Object message = model.get("message");
+                  Object trace = model.get("trace");
+                  path 获取错误的路径
+

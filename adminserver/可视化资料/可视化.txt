@@ -1,0 +1,5 @@
+ 学习地址   https://github.com/codecentric/spring-boot-admin
+
+
+ 这个项目类似查看其他板块信息的 ，
+ 在这个项目启动后， 开启其他模块的项目，这个就会监测到模块项目的信息

@@ -1,0 +1,55 @@
+方式一:
+创建一个空项目，在空项目中创建一个maven工程，名字取为hello-spring-boot-starter;
+再在空项目中创建一个springboot工程(不需要任何场景);，名字取为hello-spring-boot-starter-autoconfigruce
+把springboot中的一些默认的文件删除掉(主方法，web依赖 test依赖等),
+把springboot的项目名引入到maven项目中
+如下
+springboot中的：
+ <groupId>com.example</groupId>
+    <artifactId>hello-spring-boot-starter-autoconfigruce</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+
+引入到maven中的状态:
+<dependencies>
+        <dependency>
+            <groupId>com.example</groupId>
+            <artifactId>hello-spring-boot-starter-autoconfigruce</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
+
+ 在springboot中编写自动配置的数据
+ {
+  1.先写一个service （service层）
+  2.再写一个properties（bean层） 注解@ConfigurationProperties("com.hello") 表明是个配置类，设置前缀
+  3.把 properties通过@Autowrite注入到 service，在service中调用properties中的属性
+  4.编写自动配置类，首先@Configuration表明是个配置类，
+      再把properties注入到配置类中（同时也把properties注入到了容器中）
+      @EnableConfigurationProperties(HelloProperties.class)
+  5.现在容器中还没有 service组件，写一个方法，注解@Bean表示放入容器中，同时保证容器中没有
+  这个组件 @ConditionalOnMissingBean(HelloService.class) （因为如果自定义了组件容器会优先调用自定义的）
+
+因为autoconfigure包中配置使用 META-INF/spring.factories
+中 EnableAutoConfiguration 的值 所以在资源下编写配置文件
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.example.hello.auto.HelloServiceAutoConfiguration 自动配置类路径
+
+之后先进行springboot的 clean和 install 把这个项目下载到maven仓库中
+再进行 maven的 clean和 install,
+之后随便创建一个springboot项目，引入这个maven的依赖
+<groupId>com.starter</groupId>
+    <artifactId>hello-spring-boot-starter</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    （如果这个三个项目创建在同一个空项目里是左侧看不到依赖）
+    之后编写测试就行
+     @Autowired
+        HelloService helloService;
+
+        @GetMapping("/hello")
+        public String hello(){
+            String name = helloService.sayHello("张三");
+            return name;
+        }
+ }
+方式二:
+方式二与方式一的区别是不创建maven工程，只创建springboot工程，在测试工程中引入这个springboot的依赖就行了

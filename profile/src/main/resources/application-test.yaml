@@ -1,0 +1,6 @@
+#测试环境配置文件
+person:
+  name: test-陈六
+  age: 89
+server:
+  port: 7000

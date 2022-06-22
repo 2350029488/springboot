@@ -1,0 +1,58 @@
+1.自定义方式
+<!--引入Druid依赖   -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid</artifactId>
+            <version>1.1.17</version>
+        </dependency>
+
+创建数据源      这些配置都是xml中配置转化过来的
+  /**
+     * 在springboot中 默认的配置是 HikariDataSource
+     * @ConditionalOnMissingBean({DataSource.class})
+     * 当容器中注入DataSource时，则是以自己配置的  默认的则失效
+     * @return
+     */
+
+    @ConfigurationProperties(prefix = "spring.datasource")
+    /*因为在配置文件中写了数据库链接的内容 所以通过ConfigurationProperties把前缀表示出来可以了*/
+    @Bean
+    public DataSource dataSource(){
+        DruidDataSource dataSource = new DruidDataSource();
+              //加入监控功能  和防火墙功能 也可以在配置文件中写这个
+                dataSource.setFilters("stat,wall");
+        return dataSource;
+    }
+
+
+    /**
+     * 配置druid的监控页功能  就是druid链接数据库的所有信息
+     * @return
+     */
+    @Bean
+    public ServletRegistrationBean statViewServlet(){
+        //统计视图
+        StatViewServlet servlet=new StatViewServlet();
+        ServletRegistrationBean<StatViewServlet> registrationBean
+        =new ServletRegistrationBean<>(servlet,"/druid/*");      //配置访问路径
+
+//      配置登录密码和用户
+        registrationBean.addInitParameter("loginUsername","admin");
+        registrationBean.addInitParameter("loginPassword","123456");
+        return registrationBean;
+    }
+
+    /**
+     * WebStatFilter 用于采集web-jdbc关联监控的数据
+     */
+    @Bean
+    public FilterRegistrationBean webStatFilter(){
+        WebStatFilter webStatFilter=new WebStatFilter();
+        FilterRegistrationBean<WebStatFilter> filterRegistrationBean
+                =new FilterRegistrationBean<>(webStatFilter);
+        /*一样的 拦截哪些 放行哪些*/
+        filterRegistrationBean.setUrlPatterns(Arrays.asList("/*"));
+        filterRegistrationBean.addInitParameter("exclusions","*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*");
+        return filterRegistrationBean;
+    }
+}

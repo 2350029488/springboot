@@ -1,0 +1,21 @@
+了解一下
+
+配置文件可以在的位置:
+(1) classpath 根路径
+(2) classpath 根路径下config目录
+(3) jar包当前目录
+(4) jar包当前目录的config目录
+(5) /config子目录的直接子目录
+
+/* 往下就会覆盖前面的 */
+
+配置文件加载顺序：
+1. 　当前jar包内部的application.properties和application.yml
+2. 　当前jar包内部的application-{profile}.properties 和 application-{profile}.yml
+3. 　引用的外部jar包的application.properties和application.yml
+4. 　引用的外部jar包的application-{profile}.properties 和 application-{profile}.yml
+
+同名的配置后面的会覆盖前面的  下面的会覆盖前面的
+
+所以
+指定环境优先，外部优先，后面的可以覆盖前面的同名配置项

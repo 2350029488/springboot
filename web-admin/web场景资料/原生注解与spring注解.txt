@@ -1,0 +1,36 @@
+原生注解
+@WebFilter(urlPatterns = {"/css/*","/image/*"})这里测试拦截静态资源  单*是servlet   双*是springBoot
+@WebListener
+@WebServlet(urlPatterns = "/my")
+/*必须在主启动类上注解    @ServletComponentScan(basePackages = "com.example.webadmin")
+
+======================================================================================
+======================================================================================
+
+/*srping方式注册组件*/
+@Configuration(proxyBeanMethods = true)/*必须保证组件是单实列的 因为一定是在容器中获取*/
+public class MyRegisterConfig {
+    @Bean
+    public ServletRegistrationBean myServlet(){
+        MyServlet myServlet=new MyServlet();
+        return new ServletRegistrationBean(myServlet,"/my");
+    }
+    @Bean
+    public FilterRegistrationBean myFilter(){
+        MyFilter myFilter=new MyFilter();
+//        return new FilterRegistrationBean(myFilter,myServlet());
+        FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean(myFilter);
+        filterRegistrationBean.setUrlPatterns(Arrays.asList("/css/*","/image/*"));
+        return filterRegistrationBean;
+    }
+    @Bean
+    public ServletListenerRegistrationBean mylistener(){
+        MyListener myListener=new MyListener();
+        return new ServletListenerRegistrationBean(myListener);
+    }
+}
+======================================================================
+======================================================================
+
+原生注解与spring的路径通过 精确优先原则来看执行DispathServlet还是MyServlet
+比如 /  和/my  /就执行Spring流程  /my是精确，就执行Tomact流程

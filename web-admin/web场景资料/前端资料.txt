@@ -1,0 +1,16 @@
+<!--
+公共页面
+@{/css/style.css} 第一个 / 表示当前工程路径
+
+通过th:fragment设置这个片段 也就是把这个div 设置为外部可以调用
+或者设置id也是可以的,获取时要用#得到  <div th:replace="commom::#commonscript">
+
+比如basic_table想用这个页面的片段
+<div th:insert=" commom :: commonheader "</div>          公共页面  :: 公共页面片段
+或者 <div th:replace=" commom :: commonheader "</div>
+或者  <div th:include=" commom :: commonheader "</div>
+
+效果是    <div>  <commom>内容</>commom>   </div>  从th:标注标签开始全部放里面
+                <commom>内容</>commom>               把接收页面使用的标签替换为这个公共th：的标签
+                 <div>  内容  </div>                只把里面的内容放里面
+-->

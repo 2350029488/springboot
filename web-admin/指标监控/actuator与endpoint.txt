@@ -1,0 +1,22 @@
+<!--        引入指标监控-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+
+注意 在yml配置文件中配置属性
+#指标监控  management是所有actuator的配置
+management:
+  endpoints:
+    enabled-by-default: true #暴露所有端点信息
+    web:
+      exposure:
+        include: '*'  #以web方式暴露
+#在properties中配置要出错
+
+● 测试
+http://localhost:8080/actuator/beans
+http://localhost:8080/actuator/configprops
+http://localhost:8080/actuator/metrics
+http://localhost:8080/actuator/metrics/jvm.gc.pause
+http://localhost:8080/actuator/endpointName/detailPath

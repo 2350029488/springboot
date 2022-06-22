@@ -1,0 +1,50 @@
+<!--        c.数据源整合starter -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid-spring-boot-starter</artifactId>
+            <version>1.1.17</version>
+        </dependency>
+
+自动配置的源码
+@Configuration
+@ConditionalOnClass({DruidDataSource.class})
+@AutoConfigureBefore({DataSourceAutoConfiguration.class})
+@EnableConfigurationProperties({DruidStatProperties.class, DataSourceProperties.class})
+@Import({DruidSpringAopConfiguration.class,
+DruidStatViewServletConfiguration.class,
+DruidWebStatFilterConfiguration.class,
+DruidFilterConfiguration.class})
+
+
+#配置数据源
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+spring.datasource.url=jdbc:mysql://localhost:3306/user?serverTimezone=GMT%2B8
+spring.datasource.username=root
+spring.datasource.password=root
+
+
+spring.jdbc.template.query-timeout=3 # jdbcTemplate的超时时间
+
+#下面是druid整合starter的配置，在加入依赖后之间写。
+# 之前是自定义配置，还要写代码现在直接在配置文件开启就是
+
+#比如 druid的 防火墙 wall  ，加入监控功能stat （sql监控）
+spring.datasource.druid.filters=stat,wall
+
+spring.datasource.druid.stat-view-servlet.enabled=true #这个默认是false
+
+spring.datasource.druid.stat-view-servlet.login-password=123456 #登录druid的用户名和密码
+spring.datasource.druid.stat-view-servlet.login-username=admin
+spring.datasource.druid.stat-view-servlet.reset-enable=false 重置设置为false
+#默认是/druid/* 所以配置不配置都行
+#spring.datasource.druid.stat-view-servlet.url-pattern=/druid/*
+
+spring.datasource.druid.web-stat-filter.enabled=true
+spring.datasource.druid.web-stat-filter.url-pattern=/*
+spring.datasource.druid.web-stat-filter.exclusions='*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*'
+
+spring.datasource.druid.filter.stat.slow-sql-millis=1000 sql语句执行的毫秒数
+spring.datasource.druid.filter.stat.log-slow-sql=true  设置慢日志
+spring.datasource.druid.filter.stat.enabled=true
+spring.datasource.druid.filter.wall.config.alter-table-allow=false 防火墙设置
+spring.datasource.druid.filter.wall.enabled=true 开启防火墙

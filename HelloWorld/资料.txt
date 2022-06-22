@@ -1,0 +1,76 @@
+
+
+1.引入依赖
+<parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.3.4.RELEASE</version>
+    </parent>
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+    </dependencies>
+
+ 2.创建主程序
+/**
+ * 主程序类
+ * @SpringBootApplication：这是一个SpringBoot应用
+ */
+@SpringBootApplication
+public class MainApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(MainApplication.class,args);
+    }
+}
+
+3.编写业务
+
+4.测试
+直接运行main方法
+
+5.简化配置
+  application.properties
+
+  6.简化部署 打成jar包
+   <build>
+          <plugins>
+              <plugin>
+                  <groupId>org.springframework.boot</groupId>
+                  <artifactId>spring-boot-maven-plugin</artifactId>
+              </plugin>
+          </plugins>
+      </build>
+
+      注意点：
+      ● 取消掉cmd的快速编辑模式
+
+      启动jar包 在target右键 Open in——>Explorer
+      点击进入 target 在C:\Users\23500\Desktop\boot-01-helloword\target目录下
+      输入cmd -->输入 dir查看目录 ——> 运行当前boot-01-helloword-1.0-SNAPSHOT.jar
+      最终输入 java -jar boot-01-helloword-1.0-SNAPSHOT.jar 回车
+      在浏览器上输入 http://localhost:8888/hello  8888端口号自己设置的 /hello 为controller中的
+
+      或者直接执行main方法
+
+
+对maven的操作
+crtl F 查询
+
+在spring-boot-starter-parent 的 祖父中 已经写了配置的版本号
+ 所以这里不需要再写版本号 这个版本号是自己maven中的 比如mysql
+         <dependency>
+             <groupId>mysql</groupId>
+             <artifactId>mysql-connector-java</artifactId>
+         </dependency>
+
+  如果要改版本 ，比如mysql8.2.28 改为5.1.43  在 <properties>中改
+      <properties>
+            <mysql.version>5.1.43</mysql.version>
+      </properties>
+
+      注意：如果是spring-boot-starter-parent里面没有的依赖，还是要写版本号
+      1、引入依赖默认都可以不写版本
+      2、引入非版本仲裁的jar，要写版本号。

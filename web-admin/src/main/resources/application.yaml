@@ -1,0 +1,20 @@
+
+#指标监控  management是所有actuator的配置
+
+#management.endponit.端点名  具体配置某个端点
+management:
+  endpoints:
+    enabled-by-default: true #默认暴露所有端点信息
+    web:
+      exposure:
+        include: '*'  #以web方式暴露
+#在properties中配置要出错
+
+#  具体配置 健康端点 表示细节总是开启
+  endpoint:
+    health:
+      show-details: always
+
+#      如果只开启个别端点则需要把  enabled-by-default: true 改为false
+# 对需要开启的 比如health =>endpoint.health.enabled.true
+

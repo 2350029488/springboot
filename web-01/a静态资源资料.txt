@@ -1,0 +1,41 @@
+只要静态资源放在类路径下：
+called /static (or /public or /resources or /META-INF/resources
+访问 ： 当前项目根路径/ + 静态资源名  http://8080/1.jpg
+
+原理： 静态映射/**。
+请求进来，先去找Controller看能不能处理。不能处理的所有请求又都交给静态资源处理器
+。静态资源也找不到则响应404页面
+
+即请求地址先看controller有没有，有就执行controller， 没有就去静态资源看有没有，都没有则404
+@RestController
+public class HelloController {
+    @RequestMapping("/1.jpg")
+    public String method(){
+        return "aaaaa";
+    }
+}
+例子 ：http://localhost:8080/1.jpg 返回aaaaa
+================================================================================
+
+spring:
+  mvc:
+    static-path-pattern: /res/**
+#  改变默认的静态资源路径
+#请求时 当前项目根路径/ +res/+ 静态资源名  http://8080/res/3.jpg
+
+
+# 默认访问静态资源文件夹下的haha 即默认访问haha包下的
+web:
+ resources:
+  static-locations: [classpath:/haha/]
+
+ 访问外部资源库时 加不加res都无所谓
+ http://localhost:8080/res/webjars/jquery/3.5.1/jquery.js
+ http://localhost:8080/webjars/jquery/3.5.1/jquery.js
+ <!--        把jQuery打成了一个依赖-->
+         <dependency>
+             <groupId>org.webjars</groupId>
+             <artifactId>jquery</artifactId>
+             <version>3.5.1</version>
+         </dependency>
+

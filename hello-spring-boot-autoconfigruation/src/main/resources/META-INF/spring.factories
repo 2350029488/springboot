@@ -1,0 +1,4 @@
+#项目一启动加载哪个配置类
+
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.example.hello.auto.BookServiceAutoConfigruation

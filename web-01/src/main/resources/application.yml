@@ -1,0 +1,40 @@
+spring:
+
+  #  mvc:
+#    static-path-pattern: /res/**
+#  改变默认的静态资源路径
+#请求时 当前项目根路径/ +res/+ 静态资源名  http://8080/res/3.jpg
+
+# 默认访问哪个包下的 haha 即默认访问haha包下的
+  web:
+    resources:
+      static-locations: [classpath:/haha/]
+#开启restful风格的配置
+  mvc:
+    hiddenmethod:
+      filter:
+        enabled: true
+
+
+  contentnegotiation:
+    favor-parameter: true  #开启请求参数内容协商模式
+
+#        @Bean
+#        @ConditionalOnMissingBean({HiddenHttpMethodFilter.class})
+#        @ConditionalOnProperty(
+#        prefix = "spring.mvc.hiddenmethod.filter",
+#        name = {"enabled"}
+#        )
+#        public OrderedHiddenHttpMethodFilter hiddenHttpMethodFilter() {
+#        return new OrderedHiddenHttpMethodFilter();
+#      }
+#springboot中使用restful风格首先页面  <input name="_method" type="hidden" value="delete"/>
+# 然后需要在yml配置文件中 配置 spring.mvc.hiddenmethod.filter.enabled=true
+
+#配置前置路径  也就是说访问路径等于 工程路径 / world / 目标路径
+#server:
+#  servlet:
+#    context-path: /world
+
+
+

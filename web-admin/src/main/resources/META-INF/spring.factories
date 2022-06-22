@@ -1,0 +1,12 @@
+#自动配置监听器 springboot启动加载 ，这个三个是在spring.factories中加载
+#剩下两个是注入到容器中就行了
+
+org.springframework.context.ApplicationContextInitializer=\
+com.example.webadmin.listener.MyApplicationContextInitializer
+
+
+org.springframework.context.ApplicationListener=\
+com.example.webadmin.listener.MyApplicationListener
+
+org.springframework.boot.SpringApplicationRunListener=\
+com.example.webadmin.listener.MySpringApplicationRunListener

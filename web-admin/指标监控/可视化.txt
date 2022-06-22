@@ -1,0 +1,36 @@
+类似于微服务开发
+
+首先创建一个项目表示是服务层，在这个项目中引入依赖
+<!--        引入 Admin Server 可视化 监控 服务器-->
+        <dependency>
+            <groupId>de.codecentric</groupId>
+            <artifactId>spring-boot-admin-starter-server</artifactId>
+            <version>2.5.1</version>
+        </dependency>
+还要在该项目上注解@EnableAdminServer
+@EnableAdminServer//开启监控
+@SpringBootApplication
+public class AdminserverApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(AdminserverApplication.class, args);
+    }
+}
+ 端口号设置为8888，启动服务层
+---------------------------------------------------------
+微服务的子模块的配置
+1.首先配置端口号8080
+2.然后引入客户端依赖
+    <!--      80   引入客户端 可视化 模块 -->
+        <dependency>
+            <groupId>de.codecentric</groupId>
+            <artifactId>spring-boot-admin-starter-client</artifactId>
+            <version>2.5.1</version>
+        </dependency>
+
+ 3.在配置文件中配置客户端启动被服务端接收的端口号
+ spring.boot.admin.client.url=http://localhost:8888
+
+ -------------------------------------------
+ 先启动8888端口号的项目，也就是开启服务器，
+ 然后启动8080，在8888中就可以看到8080的信息

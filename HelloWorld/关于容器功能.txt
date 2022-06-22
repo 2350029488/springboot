@@ -1,0 +1,34 @@
+1.配置类中在方法上面使用@Bean注解注册组件默认也是单实例的
+即多次调用同一个组件的实列是一样的
+
+2.@Configuration()告诉spring这是个配置文件，代替bean.xml 其配置类也是一个组件
+
+3.@Configuration(proxyBeanMethods = true)//默认为true
+* 对同一个无依赖的组件Springboot总会检查这个组件是否在容器中 为true则保持组件的单实例，多次调用都一样
+* 如果为false 则每次调用都会创建新的对象
+
+ ■ 配置类组件之间无依赖关系用Lite模式加速容器启动过程，
+ 减少判断proxyBeanMethods = false (比如方法中没有另外的实列)就算调用方法的组件存在容器中，也只是创建对象，不是获取组件
+ ■ 配置类组件之间有依赖关系，方法会被调用得到之前单实例组件，
+ 用Full模式proxyBeanMethods = true(比如方法中有另外的实列)
+
+4. @Bean/**给容器中添加组件 默认以方法名作为组件id 返回类型就是组件类型 返回的值就是组件在容器中的实列*/
+
+5.@Conditional * 条件装配：满足Conditional指定的条件，则进行组件注入
+ 其有许多派生注解@ConditionalOnBean @ConditionalOnMissingBean等
+   可以注解在类上，也可以注解在方法上       注意组件的创建有先后顺序
+比如注解在类上： @ConditionalOnBean(name = "student")表示容器中有组件id=student创建类中的组件
+比如注解在方法上： @ConditionalOnBean(name = "student")表示容器中有组件id=student创建这个方法的组件
+
+6. @Import({User.class})给容器中自动创建出这类型的组件 默认组件的名字就是全类名com.springboot.boot.pojo.User
+
+7.@ImportResource(locations = "beans.xml")//导入外部资源 格式必须这样，不然报错说找不到这个文件
+
+8.获取配置文件application.properties中的信息
+ 一是在类中开启@ConfigurationProperties()注解，prefix前缀为文件前面的字段，还要使用@Component注解将这个组件注入容器中
+ 二是在配置类中开启@EnableConfigurationProperties(类名.class),将这个类也就是这个组件放入容器中，
+  还要在类上开启@ConfigurationProperties()注解，prefix前缀为文件前面的字段
+  @EnableConfigurationProperties + @ConfigurationProperties
+  @Component + @ConfigurationProperties
+
+

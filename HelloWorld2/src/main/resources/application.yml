@@ -1,0 +1,108 @@
+#在yml中是前缀 ： 形式 ，在properties中是以前缀.属性名=值形式
+#idea换行自动缩进了        k： v之间有空格  同一个的属性要左对齐
+
+#  'zhansan \n 李四 ' 单引号会将\n作为字符串输出
+#   "zhansan \n 李四" 双引号会将\n作为换行符输出
+#  即单引号会转义  双引号不会转义
+
+person:
+  userName: zhansan
+  boss: true
+  birth: 2019/2/1
+  age: 18
+  pet:
+    name: zhangsi
+    weight: 12.2
+# interests: [篮球,足球]
+  # -相当于键或者是数组下标
+  interests:
+    - 篮网
+    - 红网
+    - 111
+#  集合和数组一样
+  animal: [阿毛,阿狗]
+#  animal:
+#    - 阿毛
+#    - 阿狗
+
+#  map集合键值对形式
+  score: {English: 20,math: 30}
+#  score:
+#    english: 30
+#    math: 30
+
+  salarys:
+    - 333
+    - 5525
+    - 222
+
+#private Map<String, List<Pet>> allPets;
+  allPets:
+#  有两个键  sick health 一
+  #个键对应一个list，一个list中有3个Pet对象
+    sick:
+      - {name: ss,weight: 333}
+      - name: sss
+        weight: 33333
+      - name: fff
+        weight: 2222
+    health:
+      - {name: ss,weight: 333 }
+      - name: sss
+        weight: 33333
+      - name: fff
+        weight: 4444
+
+
+
+
+#练习 Animal
+
+animal:
+  username: 张三
+  boss: true
+  brith: 2222/2/22
+  age: 30
+  pet:
+    name: ss
+    weight: 36.22
+
+  interests:
+    - sss
+    - aaa
+    - ddd
+
+  animal:
+    - aaa
+    - lll
+    - vvv
+
+  score:
+    name: jjj
+    age: dada
+    sss: dsaada
+    ada: dsad
+
+  salarys:
+    - 235.2
+    - 363.2
+    - 55.1
+
+  allPets:
+    aaa:
+      - name: sdda
+        weight: 2233.2
+      - name: sdda
+        weight: 2233.2
+      - name: sdda
+        weight: 2233.2
+      - {name: ads,weight: 222222}
+    bbb:
+      - name: sdda
+        weight: 2233.2
+      - name: sdda
+        weight: 2233.2
+
+
+
+

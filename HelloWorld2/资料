@@ -1,0 +1,15 @@
+<!--        yml 快捷键-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+        </dependency>
+
+           <!--排除yml 打包依赖-->
+                        <configuration>
+                            <excludes>
+                                <exclude>
+                                    <groupId>org.springframework.boot</groupId>
+                                    <artifactId>spring-boot-configucationprocessor</artifactId>
+                                </exclude>
+                            </excludes>
+                        </configuration>

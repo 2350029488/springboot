@@ -1,0 +1,61 @@
+  引入依赖 有了这个plus一来就不需要mybatis和jdbc的依赖了
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-boot-starter</artifactId>
+            <version>3.4.1</version>
+        </dependency>
+-----------------------------------------------------------------------------
+自动配置
+● MybatisPlusAutoConfiguration 配置类，MybatisPlusProperties 配置项绑定。
+  mybatis-plus：xxx 就是对mybatis-plus的定制
+● SqlSessionFactory 自动配置好。底层是容器中默认的数据源
+● mapperLocations 自动配置好的。有默认值。classpath*:/mapper/**/*.xml；任
+   意包的类路径下的所有mapper文件夹下任意路径下的所有xml都是sql映射文件。  建议以后sql映射文件，放在 mapper下
+● 容器中也自动配置好了 SqlSessionTemplate
+● @Mapper 标注的接口也会被自动扫描；建议直接 @MapperScan("com.atguigu.admin.mapper") 批量扫描就行
+
+优点：
+●  只需要我们的Mapper继承 BaseMapper 就可以拥有crud能力
+BaseMapper里面写了一些基础的crud 对于复杂的还是要自己写
+
+/* mybatis-plus和其他一样，默认类名就是表名 如果哪天表名改了，
+* 但不想改pojo 那么就在这张表上注解  @TableName("userspringboot")*/
+
+--------------------------------------------------------------------------------
+因为mapper里面已经不需要写基础的sql 但service层还是要调用
+所以在service层 * 继承IService<M> m是javabean
+            */
+           public interface UserspringbootServeice extends IService<Userspringboot> {
+           }
+
+在其实现类层
+ 继承ServiceImpl<M,k> M是mapper接口  k是javabean
+ * 还要实现其接口
+@Service
+public class UserspringbootServeiceImpl extends
+ ServiceImpl<UserspringbootMapper, Userspringboot> implements UserspringbootServeice {
+}
+-------------------------------------------------------------------------------
+mybatis-plus的分页操作
+
+1.在配置类中配置分页功能
+    @Bean
+    public MybatisPlusInterceptor plusInterceptor(){
+        MybatisPlusInterceptor mybatisPlusInterceptor=new MybatisPlusInterceptor();
+        // 设置请求的页面大于最大页后操作， true调回到首页，false 继续请求  默认false
+        // paginationInterceptor.setOverflow(false);
+        // 设置最大单页限制数量，默认 500 条，-1 不受限制
+        // paginationInterceptor.setLimit(500);
+        // 开启 count 的 join 优化,只针对部分 left join
+
+        //这是分页拦截器
+        PaginationInnerInterceptor paginationInnerInterceptor=new PaginationInnerInterceptor();
+        mybatisPlusInterceptor.addInnerInterceptor(paginationInnerInterceptor);
+        return mybatisPlusInterceptor;
+    }
+
+    在controller中的操作
+  /*分页查询数据*/
+        Page<Userspringboot> page = new Page<>(pn, 2);
+        /*分页查询的结果*/
+        Page<Userspringboot> page1 = userspringbootServeice.page(page, null);

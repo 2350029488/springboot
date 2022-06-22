@@ -1,0 +1,43 @@
+ <!--        Lombok  有参无参注解-->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+          9.@Data //get set toString
+            @AllArgsConstructor//有参构造
+            @NoArgsConstructor//无参构造  查看点击左边Structrue
+
+
+     当有属性为类时 自己写带参构造
+@NoArgsConstructor
+//@AllArgsConstructor
+@Data
+@ToString
+@EqualsAndHashCode
+public class User {
+    private String name;
+    private Integer age;
+    private Pet pet;
+    public User(String name,Integer age){
+        this.name = name;
+        this.age = age;
+    }
+@Data提供set/get方法toString方法
+@ToString提供toString方法
+@NoArgsConstructor提供无参构造器
+@AllArgsConstructor提供有参构造器
+@EqualsAndHashCode提供equals和hashcode方法
+@Slf4j简化日志开发
+
+
+
+<!--           项目或者页面修改以后：Ctrl+F9  就不需要每次修改内容重新加载文件了   针对静态页面               -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+
+
+4.3、Spring Initailizr（项目初始化向导

@@ -1,0 +1,18 @@
+SpringMVC到底支持哪些返回值
+  ModelAndView
+  Model
+  View
+  ResponseEntity
+  ResponseBodyEmitter
+  StreamingResponseBody
+  HttpEntity
+  HttpHeaders
+  Callable
+  DeferredResult
+  ListenableFuture
+  CompletionStage
+  WebAsyncTask
+  有 @ModelAttribute 且为对象类型的
+  @ResponseBody 注解 ---> RequestResponseBodyMethodProcessor；
+
+
